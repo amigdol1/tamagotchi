@@ -3,14 +3,14 @@
 // adjust the setInterval function to include logic to stop at 0;
 
 // Actions that adjust levels
-// feed the tamagotchi increases the food level
-// entertain the tamagotchi increases the play level
-// sleep increase sleep level
+// feed the tamagotchi increases the food level - DONE
+// entertain the tamagotchi increases the play level - DONE
+// sleep increase sleep level - DONE
 // when entertaining/play level increases, the sleep decreases
 
 // XMLHttpRequests
-// get one for the pet upon page load - DONE
-// get another once the food action is done (eventlistener - button click)
+// get one for the pet upon page load
+// get another once the food action is done (eventlistener - button click) - DONE
 // remove pet giphy and replace with sleeping once it's time to sleeping
 // API Key: dE8nV26K2d3Kt2KRCMuAT0zniF8P5mWH
 
@@ -111,9 +111,14 @@ function feed() {
 }
 
 function play() {
-  buttonClickAction('play', foodCat, cat, 'play');
+  buttonClickAction('play', playCat, cat, 'play');
 }
 
 function sleep() {
-  buttonClickAction('sleep', foodCat, cat, 'sleep');
+  buttonClickAction('sleep', sleepCat, cat, 'sleep');
 }
+
+showCat(defaultCat);
+feed();
+play();
+sleep();
