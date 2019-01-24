@@ -18,35 +18,40 @@
 //"api_key": "dE8nV26K2d3Kt2KRCMuAT0zniF8P5mWH",
 //"gif_id": "JIX9t2j0ZTN9S"
 
-// have pet in an object with the following attributes: food, sleep, play
-// should I replace the url as it's own variable and then include the ids
-// in a separate object it gets it from?
+// have pet in an object with the following attributes: food, sleep, play - DONE
+
 
 const defaultCat = "http://api.giphy.com/v1/gifs/JIX9t2j0ZTN9S?api_key=dE8nV26K2d3Kt2KRCMuAT0zniF8P5mWH";
-const playCat = "http://api.giphy.com/v1/gifs/Fig1uR9DGHf6E?api_key=dE8nV26K2d3Kt2KRCMuAT0zniF8P5mWH";
-const foodCat = "http://api.giphy.com/v1/gifs/EBDXQI8mRX1u0?api_key=dE8nV26K2d3Kt2KRCMuAT0zniF8P5mWH";
-const sleepCat = "http://api.giphy.com/v1/gifs/Nf5FCBnN2TCAE?api_key=dE8nV26K2d3Kt2KRCMuAT0zniF8P5mWH";
+const playCat    = "http://api.giphy.com/v1/gifs/Fig1uR9DGHf6E?api_key=dE8nV26K2d3Kt2KRCMuAT0zniF8P5mWH";
+const foodCat    = "http://api.giphy.com/v1/gifs/EBDXQI8mRX1u0?api_key=dE8nV26K2d3Kt2KRCMuAT0zniF8P5mWH";
+const sleepCat   = "http://api.giphy.com/v1/gifs/Nf5FCBnN2TCAE?api_key=dE8nV26K2d3Kt2KRCMuAT0zniF8P5mWH";
 
-
-let decerementPropertyLevel = function(cat, catProperty, time) {
+// decrements property level through interval time
+let timedDecerementPropertyLevel = function(cat, catProperty, time) {
   // add logic to stop at 0;
   return setInterval(function(){
     cat[catProperty] -= 2;
   }, time)
 }
 
-
 let cat = {
   food: 100,
   sleep: 100,
   play: 100,
 }
-  cat.foodInterval  = decerementPropertyLevel(cat, "food", 2000);
-  cat.sleepInterval = decerementPropertyLevel(cat, "sleep", 2000);
-  cat.playInterval  = decerementPropertyLevel(cat, "play", 2000);
+  cat.foodInterval  = timedDecerementPropertyLevel(cat, "food", 2000);
+  cat.sleepInterval = timedDecerementPropertyLevel(cat, "sleep", 2000);
+  cat.playInterval  = timedDecerementPropertyLevel(cat, "play", 2000);
 
+let incrementPropertyLevel = function(cat, catProperty) {
+  cat[catProperty] += 5;
+}
 
-console.log(cat);
+// gets called to decrement property level through an action
+// (e.g. playing will decrease sleep)
+let decerementPropertyLevel = function(cat, catProperty) {
+  cat[catProperty] -= 3;
+}
 
 function loadCat(url) {
   const gifRequest = new XMLHttpRequest();
@@ -58,12 +63,9 @@ function loadCat(url) {
 }
 
 function handleRequest(gifRequest) {
-  console.log(gifRequest);
-  debugger;
   if (gifRequest.status === 200) {
     let parsedJSON = JSON.parse(gifRequest.responseText);
     let results = document.getElementById('cat');
-    let workPlacement = document.getElementById('work');
     let response = parsedJSON.data.images.fixed_width.url;
     results.innerHTML = `<img src=${response} />`
   } else {
@@ -74,10 +76,44 @@ function handleRequest(gifRequest) {
 
 // only called when defaultCat is present
 function appendWork() {
+  let workPlacement = document.getElementById('work');
+  workPlacement.append('work');
   setInterval(function() {
     workPlacement.append('work ');
   }, 300)
   setInterval(function() {
     workPlacement.innerHTML = '<div></div>';
   }, 4600)
+}
+
+function showCat(url) {
+  loadCat(url);
+  if (url === defaultCat) {
+    appendWork();
+  }
+}
+
+function feedCat() {
+  showCat(foodCat);
+  incrementPropertyLevel(cat, 'food');
+}
+
+function buttonClickAction(button_name, url, cat, catProperty) {
+  let button = document.getElementById(`${button_name}`);
+  button.addEventListener('click', function() {
+    showCat(url);
+    incrementPropertyLevel(cat, catProperty);
+  })
+}
+
+function feed() {
+  buttonClickAction('feed', foodCat, cat, 'food');
+}
+
+function play() {
+  buttonClickAction('play', foodCat, cat, 'play');
+}
+
+function sleep() {
+  buttonClickAction('sleep', foodCat, cat, 'sleep');
 }
