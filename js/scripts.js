@@ -82,22 +82,29 @@ function buttonClickAction(button_name, url, cat, catProperty, word) {
   let button = document.getElementById(`${button_name}`);
   button.addEventListener('click', function() {
     loadCat(url);
-    //appendWord(word);
+    appendWord(word);
     incrementPropertyLevel(cat, catProperty);
   })
 }
 
-// only called when defaultCat is present
-function appendWord(word) {
-  let wordPlacement = document.getElementById('word');
+let addWord       = setInterval(setWord.bind(this, ), 300);
+let deleteWord    = setInterval(removeWord, 4600);
+let wordPlacement = document.getElementById('word');
+
+function setWord(word) {
   wordPlacement.append(`${word} `);
-  setInterval(function(word) {
-    wordPlacement.append(`${word} `);
-  }, 300)
-  setInterval(function() {
-    wordPlacement.innerHTML = '<div></div>';
-  }, 4600)
 }
+
+function removeWord() {
+  wordPlacement.innerHTML = '<div></div>';
+}
+
+function appendWord(word) {
+  clearInterval(addWord);
+  clearInterval(deleteWord);
+  addWord;
+}
+
 
 let displayPropertyLevels = function(cat, catProperty) {
   let levelPlacement = document.getElementById('levels');
@@ -122,7 +129,7 @@ loadCat(defaultCat);
 feed();
 play();
 sleep();
-displayPropertyLevels(cat, cat.food);
+//displayPropertyLevels(cat, cat.food);
 // displayPropertyLevels(cat, cat[food]);
 // displayPropertyLevels(cat, cat[play]);
 // displayPropertyLevels(cat, cat[sleep]);
