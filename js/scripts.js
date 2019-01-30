@@ -30,7 +30,7 @@ const sleepCat   = "http://api.giphy.com/v1/gifs/Nf5FCBnN2TCAE?api_key=dE8nV26K2
 let timedDecerementPropertyLevel = function(cat, catProperty, time) {
   // add logic to stop at 0;
   return setInterval(function(){
-    cat[catProperty] -= 2;
+    cat[catProperty] -= 3;
   }, time)
 }
 
@@ -45,6 +45,7 @@ let cat = {
 
 let incrementPropertyLevel = function(cat, catProperty) {
   cat[catProperty] += 5;
+  console.log(cat[catProperty]);
 }
 
 // gets called to decrement property level through an action
@@ -74,51 +75,54 @@ function handleRequest(gifRequest) {
   }
 }
 
-// only called when defaultCat is present
-function appendWork() {
-  let workPlacement = document.getElementById('work');
-  workPlacement.append('work');
-  setInterval(function() {
-    workPlacement.append('work ');
-  }, 300)
-  setInterval(function() {
-    workPlacement.innerHTML = '<div></div>';
-  }, 4600)
-}
 
-function showCat(url) {
-  loadCat(url);
-  if (url === defaultCat) {
-    appendWork();
-  }
-}
-
-function feedCat() {
-  showCat(foodCat);
-  incrementPropertyLevel(cat, 'food');
-}
-
-function buttonClickAction(button_name, url, cat, catProperty) {
+// will load new cat image with corresponding button click
+// appendWord needs work (returns undefined after first click)
+function buttonClickAction(button_name, url, cat, catProperty, word) {
   let button = document.getElementById(`${button_name}`);
   button.addEventListener('click', function() {
-    showCat(url);
+    loadCat(url);
+    //appendWord(word);
     incrementPropertyLevel(cat, catProperty);
   })
 }
 
+// only called when defaultCat is present
+function appendWord(word) {
+  let wordPlacement = document.getElementById('word');
+  wordPlacement.append(`${word} `);
+  setInterval(function(word) {
+    wordPlacement.append(`${word} `);
+  }, 300)
+  setInterval(function() {
+    wordPlacement.innerHTML = '<div></div>';
+  }, 4600)
+}
+
+let displayPropertyLevels = function(cat, catProperty) {
+  let levelPlacement = document.getElementById('levels');
+  console.log(cat);
+  console.log(cat[catProperty]);
+  levelPlacement.append(`${cat[catProperty]}`);
+}
+
 function feed() {
-  buttonClickAction('feed', foodCat, cat, 'food');
+  buttonClickAction('feed', foodCat, cat, 'food', 'eat');
 }
 
 function play() {
-  buttonClickAction('play', playCat, cat, 'play');
+  buttonClickAction('play', playCat, cat, 'play', 'play');
 }
 
 function sleep() {
-  buttonClickAction('sleep', sleepCat, cat, 'sleep');
+  buttonClickAction('sleep', sleepCat, cat, 'sleep', 'snooze');
 }
 
-showCat(defaultCat);
+loadCat(defaultCat);
 feed();
 play();
 sleep();
+displayPropertyLevels(cat, cat.food);
+// displayPropertyLevels(cat, cat[food]);
+// displayPropertyLevels(cat, cat[play]);
+// displayPropertyLevels(cat, cat[sleep]);
