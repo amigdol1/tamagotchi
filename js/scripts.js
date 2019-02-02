@@ -70,8 +70,7 @@ function handleRequest(gifRequest) {
     let response = parsedJSON.data.images.fixed_width.url;
     results.innerHTML = `<img src=${response} />`
   } else {
-    // handle the error
-    console.log('not a success');
+    reject('Error occurred loading gif');
   }
 }
 
@@ -82,36 +81,29 @@ function buttonClickAction(button_name, url, cat, catProperty, word) {
   let button = document.getElementById(`${button_name}`);
   button.addEventListener('click', function() {
     loadCat(url);
-    appendWord(word);
+    //appendWord(word);
     incrementPropertyLevel(cat, catProperty);
   })
 }
 
-let addWord       = setInterval(setWord.bind(this, ), 300);
-let deleteWord    = setInterval(removeWord, 4600);
-let wordPlacement = document.getElementById('word');
+// let addWord       = setInterval(setWord.bind(this, ), 300);
+// let deleteWord    = setInterval(removeWord, 4600);
+// let wordPlacement = document.getElementById('word');
+//
+// function setWord(word) {
+//   wordPlacement.append(`${word} `);
+// }
+//
+// function removeWord() {
+//   wordPlacement.innerHTML = '<div></div>';
+// }
+//
+// function appendWord(word) {
+//   clearInterval(addWord);
+//   clearInterval(deleteWord);
+//   addWord;
+// }
 
-function setWord(word) {
-  wordPlacement.append(`${word} `);
-}
-
-function removeWord() {
-  wordPlacement.innerHTML = '<div></div>';
-}
-
-function appendWord(word) {
-  clearInterval(addWord);
-  clearInterval(deleteWord);
-  addWord;
-}
-
-
-let displayPropertyLevels = function(cat, catProperty) {
-  let levelPlacement = document.getElementById('levels');
-  console.log(cat);
-  console.log(cat[catProperty]);
-  levelPlacement.append(`${cat[catProperty]}`);
-}
 
 function feed() {
   buttonClickAction('feed', foodCat, cat, 'food', 'eat');
@@ -129,7 +121,15 @@ loadCat(defaultCat);
 feed();
 play();
 sleep();
-//displayPropertyLevels(cat, cat.food);
-// displayPropertyLevels(cat, cat[food]);
-// displayPropertyLevels(cat, cat[play]);
-// displayPropertyLevels(cat, cat[sleep]);
+
+
+// sets the progress bars based on the corresponding cat property value
+// e.g. if the value of 'cat.sleep' is 65, then the width should be 65%
+function adjustProgressBarWidth(cat, catProperty) {
+  console.log(cat, catProperty);
+  let bar = document.getElementById(`${catProperty}-bar`).style.width = `${cat[catProperty]}%`;
+}
+
+adjustProgressBarWidth(cat, 'food');
+adjustProgressBarWidth(cat, 'play');
+adjustProgressBarWidth(cat, 'sleep');
