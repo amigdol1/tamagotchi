@@ -30,7 +30,8 @@ const sleepCat   = "http://api.giphy.com/v1/gifs/Nf5FCBnN2TCAE?api_key=dE8nV26K2
 let timedDecerementPropertyLevel = function(cat, catProperty, time) {
   // add logic to stop at 0;
   return setInterval(function(){
-    cat[catProperty] -= 3;
+    cat[catProperty] -= 1;
+    adjustProgressBarWidth(cat, catProperty);
   }, time)
 }
 
@@ -39,19 +40,14 @@ let cat = {
   sleep: 100,
   play: 100,
 }
-  cat.foodInterval  = timedDecerementPropertyLevel(cat, "food", 2000);
-  cat.sleepInterval = timedDecerementPropertyLevel(cat, "sleep", 2000);
-  cat.playInterval  = timedDecerementPropertyLevel(cat, "play", 2000);
+  cat.foodInterval  = timedDecerementPropertyLevel(cat, "food", 500);
+  cat.sleepInterval = timedDecerementPropertyLevel(cat, "sleep", 500);
+  cat.playInterval  = timedDecerementPropertyLevel(cat, "play", 500);
 
 let incrementPropertyLevel = function(cat, catProperty) {
+  // add logic to stop/not be able to add more when level=100;
   cat[catProperty] += 5;
-  console.log(cat[catProperty]);
-}
-
-// gets called to decrement property level through an action
-// (e.g. playing will decrease sleep)
-let decerementPropertyLevel = function(cat, catProperty) {
-  cat[catProperty] -= 3;
+  adjustProgressBarWidth(cat, catProperty);
 }
 
 function loadCat(url) {
@@ -126,9 +122,10 @@ sleep();
 // sets the progress bars based on the corresponding cat property value
 // e.g. if the value of 'cat.sleep' is 65, then the width should be 65%
 function adjustProgressBarWidth(cat, catProperty) {
-  console.log(cat, catProperty);
-  let bar = document.getElementById(`${catProperty}-bar`).style.width = `${cat[catProperty]}%`;
+  let bar = document.getElementById(`${catProperty}-bar`);
+  bar.style.width = `${cat[catProperty]}%`;
 }
+
 
 adjustProgressBarWidth(cat, 'food');
 adjustProgressBarWidth(cat, 'play');

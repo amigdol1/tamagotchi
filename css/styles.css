@@ -1,6 +1,14 @@
+.container-wrapper {
+  display: flex;
+  justify-content: space-around;
+}
+
+
 .progress-bar {
   height: 24px;
   width: 1%;
-  background-color: black;
+  background-color: grey;
+  border-radius: 10px;
+  border-color: black;
   margin: 5px;
 }
