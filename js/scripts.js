@@ -40,14 +40,17 @@ let cat = {
   sleep: 100,
   play: 100,
 }
-  cat.foodInterval  = timedDecerementPropertyLevel(cat, "food", 500);
-  cat.sleepInterval = timedDecerementPropertyLevel(cat, "sleep", 500);
-  cat.playInterval  = timedDecerementPropertyLevel(cat, "play", 500);
+  cat.foodInterval  = timedDecerementPropertyLevel(cat, "food", 1000);
+  cat.sleepInterval = timedDecerementPropertyLevel(cat, "sleep", 1000);
+  cat.playInterval  = timedDecerementPropertyLevel(cat, "play", 1000);
 
 let incrementPropertyLevel = function(cat, catProperty) {
-  // add logic to stop/not be able to add more when level=100;
-  cat[catProperty] += 5;
-  adjustProgressBarWidth(cat, catProperty);
+  if ((cat[catProperty] += 5) < 100 === true) {
+    cat[catProperty] += 5;
+    adjustProgressBarWidth(cat, catProperty);
+  } else {
+    cat[catProperty] = 100;
+  }
 }
 
 function loadCat(url) {
@@ -69,7 +72,6 @@ function handleRequest(gifRequest) {
     reject('Error occurred loading gif');
   }
 }
-
 
 // will load new cat image with corresponding button click
 // appendWord needs work (returns undefined after first click)
@@ -122,8 +124,10 @@ sleep();
 // sets the progress bars based on the corresponding cat property value
 // e.g. if the value of 'cat.sleep' is 65, then the width should be 65%
 function adjustProgressBarWidth(cat, catProperty) {
-  let bar = document.getElementById(`${catProperty}-bar`);
-  bar.style.width = `${cat[catProperty]}%`;
+  if ((cat[catProperty] > 0) && (cat[catProperty] < 100)) {
+    let bar = document.getElementById(`${catProperty}-bar`);
+    bar.style.width = `${cat[catProperty]}%`;
+  }
 }
 
 
