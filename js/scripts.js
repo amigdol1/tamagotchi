@@ -27,13 +27,21 @@ const foodCat    = "http://api.giphy.com/v1/gifs/EBDXQI8mRX1u0?api_key=dE8nV26K2
 const sleepCat   = "http://api.giphy.com/v1/gifs/Nf5FCBnN2TCAE?api_key=dE8nV26K2d3Kt2KRCMuAT0zniF8P5mWH";
 
 // decrements property level through interval time
-let timedDecerementPropertyLevel = function(cat, catProperty, time) {
-  // add logic to stop at 0;
-  return setInterval(function(){
-    cat[catProperty] -= 1;
-    adjustProgressBarWidth(cat, catProperty);
-  }, time)
+let timedDecerementPropertyLevel = function (cat, catProperty, time) {
+  if (cat[catProperty] > 0) {
+    function(cat, catProperty, time) {
+      return setInterval(function(){
+        cat[catProperty] -= 1;
+        adjustProgressBarWidth(cat, catProperty);
+      }, time)
+    }
+  } else {
+    cat[catProperty] === 0;
+    alert(`oh no! your tamagotchi needs to ${catProperty}`)
+  }
 }
+
+
 
 let cat = {
   food: 100,
