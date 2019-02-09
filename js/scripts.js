@@ -28,19 +28,11 @@ const sleepCat   = "http://api.giphy.com/v1/gifs/Nf5FCBnN2TCAE?api_key=dE8nV26K2
 
 // decrements property level through interval time
 let timedDecerementPropertyLevel = function (cat, catProperty, time) {
-  if (cat[catProperty] > 0) {
-    function(cat, catProperty, time) {
-      return setInterval(function(){
-        cat[catProperty] -= 1;
-        adjustProgressBarWidth(cat, catProperty);
-      }, time)
-    }
-  } else {
-    cat[catProperty] === 0;
-    alert(`oh no! your tamagotchi needs to ${catProperty}`)
-  }
+  return setInterval(function(){
+    cat[catProperty] -= 1;
+    adjustProgressBarAndValue(cat, catProperty);
+  }, time)
 }
-
 
 
 let cat = {
@@ -48,14 +40,15 @@ let cat = {
   sleep: 100,
   play: 100,
 }
+
   cat.foodInterval  = timedDecerementPropertyLevel(cat, "food", 1000);
   cat.sleepInterval = timedDecerementPropertyLevel(cat, "sleep", 1000);
   cat.playInterval  = timedDecerementPropertyLevel(cat, "play", 1000);
 
 let incrementPropertyLevel = function(cat, catProperty) {
-  if ((cat[catProperty] += 5) < 100 === true) {
-    cat[catProperty] += 5;
-    adjustProgressBarWidth(cat, catProperty);
+  if ((cat[catProperty] += 1) <= 100 === true) {
+    cat[catProperty] += 1;
+    adjustProgressBarAndValue(cat, catProperty);
   } else {
     cat[catProperty] = 100;
   }
@@ -131,14 +124,22 @@ sleep();
 
 // sets the progress bars based on the corresponding cat property value
 // e.g. if the value of 'cat.sleep' is 65, then the width should be 65%
-function adjustProgressBarWidth(cat, catProperty) {
-  if ((cat[catProperty] > 0) && (cat[catProperty] < 100)) {
+function adjustProgressBarAndValue(cat, catProperty) {
+  if ((cat[catProperty] > 0) && (cat[catProperty] <= 100)) {
     let bar = document.getElementById(`${catProperty}-bar`);
+    let valueText = document.getElementById(`${catProperty}-value`);
+    valueText.innerHTML = '<div></div>';
+    valueText.append(`${cat[catProperty]}%`);
     bar.style.width = `${cat[catProperty]}%`;
   }
 }
 
+function showValue(cat, catProperty) {
 
-adjustProgressBarWidth(cat, 'food');
-adjustProgressBarWidth(cat, 'play');
-adjustProgressBarWidth(cat, 'sleep');
+
+}
+
+
+adjustProgressBarAndValue(cat, 'food');
+adjustProgressBarAndValue(cat, 'play');
+adjustProgressBarAndValue(cat, 'sleep');

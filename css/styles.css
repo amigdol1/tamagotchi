@@ -3,11 +3,14 @@
   justify-content: space-around;
 }
 
-
 .progress-bar {
   height: 24px;
   width: 1%;
   background-color: grey;
   border-radius: 10px;
   margin: 5px;
+}
+
+h1 {
+  font-family: monospace;
 }
