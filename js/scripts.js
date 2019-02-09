@@ -85,25 +85,6 @@ function buttonClickAction(button_name, url, cat, catProperty, word) {
   })
 }
 
-// let addWord       = setInterval(setWord.bind(this, ), 300);
-// let deleteWord    = setInterval(removeWord, 4600);
-// let wordPlacement = document.getElementById('word');
-//
-// function setWord(word) {
-//   wordPlacement.append(`${word} `);
-// }
-//
-// function removeWord() {
-//   wordPlacement.innerHTML = '<div></div>';
-// }
-//
-// function appendWord(word) {
-//   clearInterval(addWord);
-//   clearInterval(deleteWord);
-//   addWord;
-// }
-
-
 function feed() {
   buttonClickAction('feed', foodCat, cat, 'food', 'eat');
 }
@@ -125,18 +106,13 @@ sleep();
 // sets the progress bars based on the corresponding cat property value
 // e.g. if the value of 'cat.sleep' is 65, then the width should be 65%
 function adjustProgressBarAndValue(cat, catProperty) {
-  if ((cat[catProperty] > 0) && (cat[catProperty] <= 100)) {
+  if ((cat[catProperty] >= 0) && (cat[catProperty] <= 100)) {
     let bar = document.getElementById(`${catProperty}-bar`);
     let valueText = document.getElementById(`${catProperty}-value`);
     valueText.innerHTML = '<div></div>';
     valueText.append(`${cat[catProperty]}%`);
     bar.style.width = `${cat[catProperty]}%`;
   }
-}
-
-function showValue(cat, catProperty) {
-
-
 }
 
 

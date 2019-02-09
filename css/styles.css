@@ -14,3 +14,8 @@
 h1 {
   font-family: monospace;
 }
+
+button {
+  padding: 10px;
+  border-radius: 5px;
+}
