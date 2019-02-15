@@ -6,7 +6,6 @@
 // feed the tamagotchi increases the food level - DONE
 // entertain the tamagotchi increases the play level - DONE
 // sleep increase sleep level - DONE
-// when entertaining/play level increases, the sleep decreases
 
 // XMLHttpRequests
 // get one for the pet upon page load
@@ -80,7 +79,6 @@ function buttonClickAction(button_name, url, cat, catProperty, word) {
   let button = document.getElementById(`${button_name}`);
   button.addEventListener('click', function() {
     loadCat(url);
-    //appendWord(word);
     incrementPropertyLevel(cat, catProperty);
   })
 }
@@ -103,8 +101,9 @@ play();
 sleep();
 
 
-// sets the progress bars based on the corresponding cat property value
-// e.g. if the value of 'cat.sleep' is 65, then the width should be 65%
+// sets the progress bars and text for property values based on the
+// corresponding cat property value e.g. if the value of 'cat.sleep'
+// is 65, then the width of the bar and valueText should be 65%
 function adjustProgressBarAndValue(cat, catProperty) {
   if ((cat[catProperty] >= 0) && (cat[catProperty] <= 100)) {
     let bar = document.getElementById(`${catProperty}-bar`);
