@@ -8,7 +8,15 @@
   width: 1%;
   background-color: grey;
   border-radius: 10px;
-  margin: 5px;
+  margin: 10px;
+}
+
+
+/* wip */
+progress[value]::-webkit-progress-bar {
+  background-color: #eee;
+  border-radius: 2px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25) inset;
 }
 
 h1 {
@@ -18,4 +26,8 @@ h1 {
 button {
   padding: 10px;
   border-radius: 5px;
+}
+
+.property-value {
+  float: right;
 }

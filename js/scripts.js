@@ -1,23 +1,11 @@
-//Requirements
-// setInterval to decrease all levels on timer - DONE
-// adjust the setInterval function to include logic to stop at 0;
-
-// Actions that adjust levels
-// feed the tamagotchi increases the food level - DONE
-// entertain the tamagotchi increases the play level - DONE
-// sleep increase sleep level - DONE
-
-// XMLHttpRequests
-// get one for the pet upon page load
-// get another once the food action is done (eventlistener - button click) - DONE
-// remove pet giphy and replace with sleeping once it's time to sleeping
-// API Key: dE8nV26K2d3Kt2KRCMuAT0zniF8P5mWH
-
 //"http://api.giphy.com/v1/gifs/JIX9t2j0ZTN9S?api_key=dE8nV26K2d3Kt2KRCMuAT0zniF8P5mWH"
 //"api_key": "dE8nV26K2d3Kt2KRCMuAT0zniF8P5mWH",
-//"gif_id": "JIX9t2j0ZTN9S"
 
-// have pet in an object with the following attributes: food, sleep, play - DONE
+// Need an action to happen when the pet reaches 0;
+// Add CSS to background of bars;
+// Make mobile-friendly;
+// Current bug: if you rapidly press a button over and over again,
+// it will not reach 100 unless you wait for the interval to occur
 
 
 const defaultCat = "http://api.giphy.com/v1/gifs/JIX9t2j0ZTN9S?api_key=dE8nV26K2d3Kt2KRCMuAT0zniF8P5mWH";
@@ -43,15 +31,6 @@ let cat = {
   cat.foodInterval  = timedDecerementPropertyLevel(cat, "food", 1000);
   cat.sleepInterval = timedDecerementPropertyLevel(cat, "sleep", 1000);
   cat.playInterval  = timedDecerementPropertyLevel(cat, "play", 1000);
-
-let incrementPropertyLevel = function(cat, catProperty) {
-  if ((cat[catProperty] += 1) <= 100 === true) {
-    cat[catProperty] += 1;
-    adjustProgressBarAndValue(cat, catProperty);
-  } else {
-    cat[catProperty] = 100;
-  }
-}
 
 function loadCat(url) {
   const gifRequest = new XMLHttpRequest();
@@ -83,6 +62,32 @@ function buttonClickAction(button_name, url, cat, catProperty, word) {
   })
 }
 
+// will call function to adjust the progress bar and values
+// or set the cat property to 100 to ensure it does not go over 100
+let incrementPropertyLevel = function(cat, catProperty) {
+  if ((cat[catProperty] += 1) <= 100 === true) {
+    cat[catProperty] += 1;
+    adjustProgressBarAndValue(cat, catProperty);
+  } else {
+    cat[catProperty] = 100;
+  }
+}
+
+// sets the progress bars and valueText for property values based on the
+// corresponding cat property value e.g. if the value of 'cat.sleep'
+// is 65, then the width of the bar and valueText should be 65%
+function adjustProgressBarAndValue(cat, catProperty) {
+  if ((cat[catProperty] >= 0) && (cat[catProperty] <= 100)) {
+    let bar = document.getElementById(`${catProperty}-bar`);
+    let valueText = document.getElementById(`${catProperty}-value`);
+    // I do not like how I'm doing this.
+    // Is there a better way to update the percentage?
+    valueText.innerHTML = '<div></div>';
+    valueText.append(`${cat[catProperty]}%`);
+    bar.style.width = `${cat[catProperty]}%`;
+  }
+}
+
 function feed() {
   buttonClickAction('feed', foodCat, cat, 'food', 'eat');
 }
@@ -99,21 +104,6 @@ loadCat(defaultCat);
 feed();
 play();
 sleep();
-
-
-// sets the progress bars and text for property values based on the
-// corresponding cat property value e.g. if the value of 'cat.sleep'
-// is 65, then the width of the bar and valueText should be 65%
-function adjustProgressBarAndValue(cat, catProperty) {
-  if ((cat[catProperty] >= 0) && (cat[catProperty] <= 100)) {
-    let bar = document.getElementById(`${catProperty}-bar`);
-    let valueText = document.getElementById(`${catProperty}-value`);
-    valueText.innerHTML = '<div></div>';
-    valueText.append(`${cat[catProperty]}%`);
-    bar.style.width = `${cat[catProperty]}%`;
-  }
-}
-
 
 adjustProgressBarAndValue(cat, 'food');
 adjustProgressBarAndValue(cat, 'play');
