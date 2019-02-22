@@ -5,18 +5,15 @@
 
 .progress-bar {
   height: 24px;
-  width: 1%;
   background-color: grey;
-  border-radius: 10px;
-  margin: 10px;
 }
 
 
-/* wip */
-progress[value]::-webkit-progress-bar {
-  background-color: #eee;
-  border-radius: 2px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25) inset;
+.progress-bar-wrapper {
+  height: 24px;
+  width: 100%;
+  background-color: black;
+  margin: 10px;
 }
 
 h1 {

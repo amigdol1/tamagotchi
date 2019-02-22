@@ -15,11 +15,18 @@ const sleepCat   = "http://api.giphy.com/v1/gifs/Nf5FCBnN2TCAE?api_key=dE8nV26K2
 
 // decrements property level through interval time
 let timedDecerementPropertyLevel = function (cat, catProperty, time) {
+  // add a conditional to check at 0;
   return setInterval(function(){
     cat[catProperty] -= 1;
     adjustProgressBarAndValue(cat, catProperty);
   }, time)
 }
+
+// use clear interval to no longer show alert after it displays on 0;
+// OR
+// make a separate gloabl variable for all 3 intervals to set to "true" once the
+// alert has displayed
+
 
 
 let cat = {
@@ -65,6 +72,7 @@ function buttonClickAction(button_name, url, cat, catProperty, word) {
 // will call function to adjust the progress bar and values
 // or set the cat property to 100 to ensure it does not go over 100
 let incrementPropertyLevel = function(cat, catProperty) {
+  // use Math max or min instead
   if ((cat[catProperty] += 1) <= 100 === true) {
     cat[catProperty] += 1;
     adjustProgressBarAndValue(cat, catProperty);
@@ -77,13 +85,11 @@ let incrementPropertyLevel = function(cat, catProperty) {
 // corresponding cat property value e.g. if the value of 'cat.sleep'
 // is 65, then the width of the bar and valueText should be 65%
 function adjustProgressBarAndValue(cat, catProperty) {
+  // use Math max and min
   if ((cat[catProperty] >= 0) && (cat[catProperty] <= 100)) {
     let bar = document.getElementById(`${catProperty}-bar`);
     let valueText = document.getElementById(`${catProperty}-value`);
-    // I do not like how I'm doing this.
-    // Is there a better way to update the percentage?
-    valueText.innerHTML = '<div></div>';
-    valueText.append(`${cat[catProperty]}%`);
+    valueText.innerHTML = `${cat[catProperty]}%`;
     bar.style.width = `${cat[catProperty]}%`;
   }
 }
