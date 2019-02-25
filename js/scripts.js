@@ -20,13 +20,15 @@ let sleepAlert = false;
 // decrements property level through interval time
 let timedDecerementPropertyLevel = function (cat, catProperty, time, alertPrompt) {
   return setInterval(function(){
-    // i do not want to use a conditional, but trying to get a string
-    // of `${catProperty}Alert` to equal the variable
+    let futureValue = cat[catProperty] - 20;
+    cat[catProperty] = Math.max(futureValue, 0);
     if (cat[catProperty] === 0 && alertPrompt === false) {
       alert(`Oh no!! Your poor kitty did not get enough ${catProperty}! You are not worthy of Tamagotchi kitty.`);
       alertPrompt = true;
+    } else if (cat[catProperty] === 0 && alertPrompt === true) {
+        cat[catProperty] = Math.max(futureValue, 0);
     } else {
-      cat[catProperty] -= 10;
+      cat[catProperty] -= 20;
       adjustProgressBarAndValue(cat, catProperty);
     }
   }, time)
@@ -76,26 +78,21 @@ function buttonClickAction(button_name, url, cat, catProperty, word) {
 // will call function to adjust the progress bar and values
 // or set the cat property to 100 to ensure it does not go over 100
 let incrementPropertyLevel = function(cat, catProperty) {
-  // use Math max or min instead
-  if ((cat[catProperty] += 1) <= 100 === true) {
-    cat[catProperty] += 1;
-    adjustProgressBarAndValue(cat, catProperty);
-  } else {
-    cat[catProperty] = 100;
-  }
+  // only increments when the new value is still less than or equal to 100;
+  let futureValue = cat[catProperty] + 20;
+  cat[catProperty] = Math.min(futureValue, 100);
+  adjustProgressBarAndValue(cat, catProperty);
+  //alertPrompt = false;
 }
 
 // sets the progress bars and valueText for property values based on the
 // corresponding cat property value e.g. if the value of 'cat.sleep'
 // is 65, then the width of the bar and valueText should be 65%
 function adjustProgressBarAndValue(cat, catProperty) {
-  // use Math max and min
-  if ((cat[catProperty] >= 0) && (cat[catProperty] <= 100)) {
-    let bar = document.getElementById(`${catProperty}-bar`);
-    let valueText = document.getElementById(`${catProperty}-value`);
-    valueText.innerHTML = `${cat[catProperty]}%`;
-    bar.style.width = `${cat[catProperty]}%`;
-  }
+  let bar = document.getElementById(`${catProperty}-bar`);
+  let valueText = document.getElementById(`${catProperty}-value`);
+  valueText.innerHTML = `${cat[catProperty]}%`;
+  bar.style.width = `${cat[catProperty]}%`;
 }
 
 function feed() {
