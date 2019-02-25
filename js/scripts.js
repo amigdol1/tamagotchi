@@ -2,7 +2,6 @@
 //"api_key": "dE8nV26K2d3Kt2KRCMuAT0zniF8P5mWH",
 
 // Need an action to happen when the pet reaches 0;
-// Add CSS to background of bars;
 // Make mobile-friendly;
 // Current bug: if you rapidly press a button over and over again,
 // it will not reach 100 unless you wait for the interval to occur
@@ -13,20 +12,25 @@ const playCat    = "http://api.giphy.com/v1/gifs/Fig1uR9DGHf6E?api_key=dE8nV26K2
 const foodCat    = "http://api.giphy.com/v1/gifs/EBDXQI8mRX1u0?api_key=dE8nV26K2d3Kt2KRCMuAT0zniF8P5mWH";
 const sleepCat   = "http://api.giphy.com/v1/gifs/Nf5FCBnN2TCAE?api_key=dE8nV26K2d3Kt2KRCMuAT0zniF8P5mWH";
 
+
+let foodAlert = false;
+let playAlert = false;
+let sleepAlert = false;
+
 // decrements property level through interval time
-let timedDecerementPropertyLevel = function (cat, catProperty, time) {
-  // add a conditional to check at 0;
+let timedDecerementPropertyLevel = function (cat, catProperty, time, alertPrompt) {
   return setInterval(function(){
-    cat[catProperty] -= 1;
-    adjustProgressBarAndValue(cat, catProperty);
+    // i do not want to use a conditional, but trying to get a string
+    // of `${catProperty}Alert` to equal the variable
+    if (cat[catProperty] === 0 && alertPrompt === false) {
+      alert(`Oh no!! Your poor kitty did not get enough ${catProperty}! You are not worthy of Tamagotchi kitty.`);
+      alertPrompt = true;
+    } else {
+      cat[catProperty] -= 10;
+      adjustProgressBarAndValue(cat, catProperty);
+    }
   }, time)
 }
-
-// use clear interval to no longer show alert after it displays on 0;
-// OR
-// make a separate gloabl variable for all 3 intervals to set to "true" once the
-// alert has displayed
-
 
 
 let cat = {
@@ -35,9 +39,9 @@ let cat = {
   play: 100,
 }
 
-  cat.foodInterval  = timedDecerementPropertyLevel(cat, "food", 1000);
-  cat.sleepInterval = timedDecerementPropertyLevel(cat, "sleep", 1000);
-  cat.playInterval  = timedDecerementPropertyLevel(cat, "play", 1000);
+  cat.foodInterval  = timedDecerementPropertyLevel(cat, "food", 1000, foodAlert);
+  cat.sleepInterval = timedDecerementPropertyLevel(cat, "sleep", 1000, sleepAlert);
+  cat.playInterval  = timedDecerementPropertyLevel(cat, "play", 1000, playAlert);
 
 function loadCat(url) {
   const gifRequest = new XMLHttpRequest();
@@ -51,8 +55,8 @@ function loadCat(url) {
 function handleRequest(gifRequest) {
   if (gifRequest.status === 200) {
     let parsedJSON = JSON.parse(gifRequest.responseText);
-    let results = document.getElementById('cat');
-    let response = parsedJSON.data.images.fixed_width.url;
+    let results    = document.getElementById('cat');
+    let response   = parsedJSON.data.images.fixed_width.url;
     results.innerHTML = `<img src=${response} />`
   } else {
     reject('Error occurred loading gif');

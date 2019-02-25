@@ -1,4 +1,5 @@
 .container-wrapper {
+  width: 100%;
   display: flex;
   justify-content: space-around;
 }
@@ -7,7 +8,6 @@
   height: 24px;
   background-color: grey;
 }
-
 
 .progress-bar-wrapper {
   height: 24px;
@@ -27,4 +27,14 @@ button {
 
 .property-value {
   float: right;
+}
+
+@media screen and (max-width: 500px) {
+  .container-wrapper {
+    width: 100%;
+  }
+  /* .lower-section {
+    display: flex;
+    justify-content: space-between;
+  } */
 }
