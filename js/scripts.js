@@ -1,11 +1,9 @@
 //"http://api.giphy.com/v1/gifs/JIX9t2j0ZTN9S?api_key=dE8nV26K2d3Kt2KRCMuAT0zniF8P5mWH"
 //"api_key": "dE8nV26K2d3Kt2KRCMuAT0zniF8P5mWH",
 
-// Need an action to happen when the pet reaches 0;
 // Make mobile-friendly;
-// Current bug: if you rapidly press a button over and over again,
-// it will not reach 100 unless you wait for the interval to occur
-
+// add alert for all values being zero
+//
 
 const defaultCat = "http://api.giphy.com/v1/gifs/JIX9t2j0ZTN9S?api_key=dE8nV26K2d3Kt2KRCMuAT0zniF8P5mWH";
 const playCat    = "http://api.giphy.com/v1/gifs/Fig1uR9DGHf6E?api_key=dE8nV26K2d3Kt2KRCMuAT0zniF8P5mWH";
@@ -13,27 +11,28 @@ const foodCat    = "http://api.giphy.com/v1/gifs/EBDXQI8mRX1u0?api_key=dE8nV26K2
 const sleepCat   = "http://api.giphy.com/v1/gifs/Nf5FCBnN2TCAE?api_key=dE8nV26K2d3Kt2KRCMuAT0zniF8P5mWH";
 
 
-let foodAlert = false;
-let playAlert = false;
-let sleepAlert = false;
+let foodAlert    = false;
+let playAlert    = false;
+let sleepAlert   = false;
+let endLifeAlert = false;
 
 // decrements property level through interval time
 let timedDecerementPropertyLevel = function (cat, catProperty, time, alertPrompt) {
   return setInterval(function(){
     let futureValue = cat[catProperty] - 20;
     cat[catProperty] = Math.max(futureValue, 0);
-    if (cat[catProperty] === 0 && alertPrompt === false) {
+    adjustProgressBarAndValue(cat, catProperty);
+    if (!cat[catProperty] && !alertPrompt) {
       alert(`Oh no!! Your poor kitty did not get enough ${catProperty}! You are not worthy of Tamagotchi kitty.`);
       alertPrompt = true;
-    } else if (cat[catProperty] === 0 && alertPrompt === true) {
-        cat[catProperty] = Math.max(futureValue, 0);
     } else {
-      cat[catProperty] -= 20;
-      adjustProgressBarAndValue(cat, catProperty);
+      endTamagotchiLife();
     }
   }, time)
 }
 
+// create a new function that checks if all of the alerts are true and
+// then it wont allow you to incremement the level
 
 let cat = {
   food: 100,
@@ -42,8 +41,9 @@ let cat = {
 }
 
   cat.foodInterval  = timedDecerementPropertyLevel(cat, "food", 1000, foodAlert);
-  cat.sleepInterval = timedDecerementPropertyLevel(cat, "sleep", 1000, sleepAlert);
   cat.playInterval  = timedDecerementPropertyLevel(cat, "play", 1000, playAlert);
+  cat.sleepInterval = timedDecerementPropertyLevel(cat, "sleep", 1000, sleepAlert);
+
 
 function loadCat(url) {
   const gifRequest = new XMLHttpRequest();
@@ -65,6 +65,17 @@ function handleRequest(gifRequest) {
   }
 }
 
+
+// will call function to adjust the progress bar and values
+// or set the cat property to 100 to ensure it does not go over 100
+let incrementPropertyLevel = function(cat, catProperty) {
+  let futureValue = cat[catProperty] + 20;
+  if (cat[catProperty] != 0) {
+    cat[catProperty] = Math.min(futureValue, 100);
+    adjustProgressBarAndValue(cat, catProperty);
+  }
+}
+
 // will load new cat image with corresponding button click
 // appendWord needs work (returns undefined after first click)
 function buttonClickAction(button_name, url, cat, catProperty, word) {
@@ -75,16 +86,6 @@ function buttonClickAction(button_name, url, cat, catProperty, word) {
   })
 }
 
-// will call function to adjust the progress bar and values
-// or set the cat property to 100 to ensure it does not go over 100
-let incrementPropertyLevel = function(cat, catProperty) {
-  // only increments when the new value is still less than or equal to 100;
-  let futureValue = cat[catProperty] + 20;
-  cat[catProperty] = Math.min(futureValue, 100);
-  adjustProgressBarAndValue(cat, catProperty);
-  //alertPrompt = false;
-}
-
 // sets the progress bars and valueText for property values based on the
 // corresponding cat property value e.g. if the value of 'cat.sleep'
 // is 65, then the width of the bar and valueText should be 65%
@@ -93,6 +94,15 @@ function adjustProgressBarAndValue(cat, catProperty) {
   let valueText = document.getElementById(`${catProperty}-value`);
   valueText.innerHTML = `${cat[catProperty]}%`;
   bar.style.width = `${cat[catProperty]}%`;
+}
+
+// check to see if all of the alerts for the cat properties have displayed
+// this means they are all at 0 and the Tamagotchi can no longer continue it's life
+function endTamagotchiLife() {
+  if (!cat.food && !cat.play && !cat.sleep) {
+    console.log("All of your Tamagotchi's life resources have depleted! Game over.");
+    clearInterval(timedDecerementPropertyLevel);
+  }
 }
 
 function feed() {
