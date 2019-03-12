@@ -2,8 +2,7 @@
 //"api_key": "dE8nV26K2d3Kt2KRCMuAT0zniF8P5mWH",
 
 // Make mobile-friendly;
-// add alert for all values being zero
-//
+
 
 const defaultCat = "http://api.giphy.com/v1/gifs/JIX9t2j0ZTN9S?api_key=dE8nV26K2d3Kt2KRCMuAT0zniF8P5mWH";
 const playCat    = "http://api.giphy.com/v1/gifs/Fig1uR9DGHf6E?api_key=dE8nV26K2d3Kt2KRCMuAT0zniF8P5mWH";
@@ -12,11 +11,12 @@ const sleepCat   = "http://api.giphy.com/v1/gifs/Nf5FCBnN2TCAE?api_key=dE8nV26K2
 
 // decrements property level through interval time
 let timedDecerementPropertyLevel = function (cat, catProperty) {
-  let futureValue = cat[catProperty] - 20;
+  let futureValue = cat[catProperty] - 1;
   cat[catProperty] = Math.max(futureValue, 0);
   adjustProgressBarAndValue(cat, catProperty);
   if (!cat[catProperty]) {
     alert(`Oh no!! Your poor kitty did not get enough ${catProperty}! You are not worthy of Tamagotchi kitty.`);
+    document.getElementById(`${catProperty}`).disabled = true;
     function determineInterval(catProperty) {
       switch(catProperty) {
       case 'food':
@@ -30,6 +30,7 @@ let timedDecerementPropertyLevel = function (cat, catProperty) {
         break;
     }
   }
+    // check to see if endTamagotchiLife is applicable before the relevant interval is cleared
     endTamagotchiLife();
     clearInterval(determineInterval(catProperty));
   }
@@ -72,7 +73,7 @@ function handleRequest(gifRequest) {
 // will call function to adjust the progress bar and values
 // or set the cat property to 100 to ensure it does not go over 100
 let incrementPropertyLevel = function(cat, catProperty) {
-  let futureValue = cat[catProperty] + 20;
+  let futureValue = cat[catProperty] + 1;
   if (cat[catProperty] != 0) {
     cat[catProperty] = Math.min(futureValue, 100);
     adjustProgressBarAndValue(cat, catProperty);
@@ -107,8 +108,8 @@ function endTamagotchiLife() {
   }
 }
 
-function feed() {
-  buttonClickAction('feed', foodCat, cat, 'food', 'eat');
+function food() {
+  buttonClickAction('food', foodCat, cat, 'food', 'eat');
 }
 
 function play() {
@@ -120,7 +121,7 @@ function sleep() {
 }
 
 loadCat(defaultCat);
-feed();
+food();
 play();
 sleep();
 
