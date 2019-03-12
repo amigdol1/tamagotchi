@@ -17,19 +17,6 @@ let timedDecerementPropertyLevel = function (cat, catProperty) {
   if (!cat[catProperty]) {
     alert(`Oh no!! Your poor kitty did not get enough ${catProperty}! You are not worthy of Tamagotchi kitty.`);
     document.getElementById(`${catProperty}`).disabled = true;
-    function determineInterval(catProperty) {
-      switch(catProperty) {
-      case 'food':
-        return foodInterval;
-        break;
-      case 'play':
-        return playInterval;
-        break;
-      case 'sleep':
-        return sleepInterval;
-        break;
-    }
-  }
     // check to see if endTamagotchiLife is applicable before the relevant interval is cleared
     endTamagotchiLife();
     clearInterval(determineInterval(catProperty));
@@ -47,6 +34,20 @@ let cat = {
   let foodInterval  = setInterval(timedDecerementPropertyLevel.bind(this, cat, "food"), 1000);
   let playInterval  = setInterval(timedDecerementPropertyLevel.bind(this, cat, "play"), 1000);
   let sleepInterval = setInterval(timedDecerementPropertyLevel.bind(this, cat, "sleep",), 1000);
+
+  function determineInterval(catProperty) {
+    switch(catProperty) {
+    case 'food':
+      return foodInterval;
+      break;
+    case 'play':
+      return playInterval;
+      break;
+    case 'sleep':
+      return sleepInterval;
+      break;
+    }
+  }
 
 
 function loadCat(url) {
