@@ -15,9 +15,7 @@ let timedDecerementPropertyLevel = function (cat, catProperty) {
   let futureValue = cat[catProperty] - 20;
   cat[catProperty] = Math.max(futureValue, 0);
   adjustProgressBarAndValue(cat, catProperty);
-  if (endTamagotchiLife()) {
-    endTamagotchiLife();
-  } else if (!cat[catProperty]) {
+  if (!cat[catProperty]) {
     alert(`Oh no!! Your poor kitty did not get enough ${catProperty}! You are not worthy of Tamagotchi kitty.`);
     function determineInterval(catProperty) {
       switch(catProperty) {
@@ -32,6 +30,7 @@ let timedDecerementPropertyLevel = function (cat, catProperty) {
         break;
     }
   }
+    endTamagotchiLife();
     clearInterval(determineInterval(catProperty));
   }
 }
@@ -104,7 +103,7 @@ function adjustProgressBarAndValue(cat, catProperty) {
 // Tamagotchi can no longer continue it's life if all resources are at 0
 function endTamagotchiLife() {
   if (!cat.food && !cat.play && !cat.sleep) {
-    console.log("All of your Tamagotchi's life resources have depleted! Game over.");
+    alert("All of your Tamagotchi's life resources have depleted! Game over.");
   }
 }
 
